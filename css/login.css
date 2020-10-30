@@ -1,0 +1,44 @@
+.main {
+    width: 50%;
+    height: 500px;
+    margin: auto;
+    margin-top: 100px;
+    border: black;
+    border-width: 3px;
+    border-radius: 30px;
+    border-style: solid;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.main label {
+    color: white;
+}
+
+body::after {
+    content: "";
+    background: url('../assets/images/bg_login.jpg');
+    background-size: 100%;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+    color: rgb(0, 255, 170);
+    margin-top: 50px;
+}
+
+#resetpwd {
+    float: right;
+}
+
+.btn_login{
+    margin-left: 120px;
+}
