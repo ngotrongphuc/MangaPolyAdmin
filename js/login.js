@@ -32,6 +32,8 @@ function signIn() {
         .then(function (firebaseUser) {
             // Success 
             window.location.href = "mangas.html";
+            let user = firebase.auth().currentUser;
+            console.log(user.metadata.lastSignInTime);
         })
         .catch(function (error) {
             // Error Handling
@@ -55,3 +57,22 @@ function signOut() {
 //         //no user is signed in
 //     }
 // });
+
+
+//trigger onclick when press enter
+window.onload = function () {
+    var emailInput = document.getElementById("email");
+    var passwordInput = document.getElementById("password");
+    emailInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("btnSignin").click();
+        }
+    });
+    passwordInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("btnSignin").click();
+        }
+    });
+}
