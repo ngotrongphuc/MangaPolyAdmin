@@ -1,46 +1,46 @@
 //Make the DIV element draggagle:
-dragElement(document.getElementById("fdivAdd"));
+// dragElement(document.getElementById("fdivAdd"));
 
-function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (document.getElementById(elmnt.id + "header")) {
-        /* if present, the header is where you move the DIV from:*/
-        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-    } else {
-        /* otherwise, move the DIV from anywhere inside the DIV:*/
-        elmnt.onmousedown = dragMouseDown;
-    }
+// function dragElement(elmnt) {
+//     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+//     if (document.getElementById(elmnt.id + "header")) {
+//         /* if present, the header is where you move the DIV from:*/
+//         document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+//     } else {
+//         /* otherwise, move the DIV from anywhere inside the DIV:*/
+//         elmnt.onmousedown = dragMouseDown;
+//     }
 
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-    }
+//     function dragMouseDown(e) {
+//         e = e || window.event;
+//         e.preventDefault();
+//         // get the mouse cursor position at startup:
+//         pos3 = e.clientX;
+//         pos4 = e.clientY;
+//         document.onmouseup = closeDragElement;
+//         // call a function whenever the cursor moves:
+//         document.onmousemove = elementDrag;
+//     }
 
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
+//     function elementDrag(e) {
+//         e = e || window.event;
+//         e.preventDefault();
+//         // calculate the new cursor position:
+//         pos1 = pos3 - e.clientX;
+//         pos2 = pos4 - e.clientY;
+//         pos3 = e.clientX;
+//         pos4 = e.clientY;
+//         // set the element's new position:
+//         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+//         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+//     }
 
-    function closeDragElement() {
-        /* stop moving when mouse button is released:*/
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
+//     function closeDragElement() {
+//         /* stop moving when mouse button is released:*/
+//         document.onmouseup = null;
+//         document.onmousemove = null;
+//     }
+// }
 
 //show/hide loader
 function showLoader() {
@@ -124,6 +124,9 @@ async function submitForm() {
             createdDate: dateTime,
             updatedDate: ""
         }
+        // for(var i = 0; i <arrSelectedCate.length;i++){
+        //     manga[arrSelectedCate[i]]=arrSelectedCate[i];
+        // }
         firebaseRef.child('mangas').child(id).set(manga);
     }
 
@@ -319,11 +322,11 @@ window.onload = async function getAllMangas() {
                     '<p style="height:100px;overflow:auto">' + childData.author + '</p>',
                     '<p style="width:100px;height:100px;overflow:auto">' + childData.category + '</p>',
                     childData.state,
-                    '<p style="width:300px;height:100px;overflow:auto">' + childData.description + '</p>',
+                    '<p style="width:350px;height:100px;overflow:auto">' + childData.description + '</p>',
                     childData.totalViews,
                     childData.totalLikes,
-                    '<button style="background-color: red" onclick="deleteManga(' + "'" + childKey + "'" + ')">xóa</button>' +
-                    '<button style="background-color: yellow" onclick="showModalUpdateManga(' + "'" + childKey + "'" + ')">sửa/thêm chapter</button>',
+                    '<button class="btn btn-danger" style="margin-bottom:20px" onclick="deleteManga(' + "'" + childKey + "'" + ')">xóa</button>' +
+                    '<button class="btn btn-warning" onclick="showModalUpdateManga(' + "'" + childKey + "'" + ')">sửa</button>',
                     childData.createdDate,
                     childData.updatedDate
                 ]).draw(false);
@@ -409,7 +412,7 @@ function showModalListChapter(id, mangaTitle) {
     firebase.database().ref('chapters/' + id).once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var chapterTitle = childSnapshot.key;
-            content = '<i class="fas fa-trash-alt" onclick="deleteChapter(' + "'" + id + "'" + "," + "'" + chapterTitle + "'" + ')"></i><i class="fas fa-edit" onclick="showModalUpdateChapter(' + "'" + id + "'" + "," + "'" + mangaTitle + "'" + "," + "'" + chapterTitle + "'" + ')"></i><a href="chapter.html?' + id + '|' + chapterTitle + '" target="_blank">' + chapterTitle + '</a></br>';
+            content = '<i class="fas fa-trash-alt" onclick="deleteChapter(' + "'" + id + "'" + "," + "'" + chapterTitle + "'" + ')"></i><i class="fas fa-edit" onclick="showModalUpdateChapter(' + "'" + id + "'" + "," + "'" + mangaTitle + "'" + "," + "'" + chapterTitle + "'" + ')"></i><a href="chapter.html?' + id + '|' + chapterTitle + '|' + mangaTitle + '" target="_blank">' + chapterTitle + '</a></br>';
             $('#listChapter').append(content);
         });
     });
@@ -461,7 +464,7 @@ async function updateChapter() {
         }
         firebaseRef.child('chapters').child(idManga).child(chapterTitle).set(arrayImgs);
     }
-    var r = confirm('Cập nhật sẽ ghi đè toàn bộ ảnh của chapter này, bạn có muốn tiếp tục?');
+    var r = confirm('Cập nhật sẽ cập nhật lại toàn bộ ảnh của chapter này, bạn có muốn tiếp tục?');
     if (r == true) {
         await uploadChapter();
         showSnackbar("Cập nhật chapter thành công!");

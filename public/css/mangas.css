@@ -1,23 +1,29 @@
 /* dragable floating button add manga */
 
-#fdivAdd {
-    width: 80px;
-    height: 80px;
+/* #fdivAdd {
+    width: 90px;
+    height: 90px;
     position: fixed;
     right: 45px;
-    bottom: 93px;
+    bottom: 86px;
     cursor: pointer;
     z-index: 9999;
     background-color: #007bff;
-    border-radius: 40px;
+    border-radius: 45px;
 }
 
 #fbtnAdd {
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
     font-size: 25px;
     color: white;
+} */
+
+/* btnAdd */
+
+#btnAdd{
+    height: 50px;
 }
 
 /* show/hide loader */

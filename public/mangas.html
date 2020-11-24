@@ -44,7 +44,7 @@
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" onclick="signOut()" style="cursor: pointer;">Logout</a>
+                    <a class="dropdown-item" onclick="signOut()" style="cursor: pointer;">Đăng xuất</a>
                 </div>
             </li>
         </ul>
@@ -74,6 +74,7 @@
                         </div>
                     </div>
                 </div>
+                <button ID="btnAdd" type="button" class="btn btn-success" onclick="showModalAddManga()">THÊM</button>
                 <div class="sb-sidenav-footer">
                     <div class="small">App:</div>
                     Manga Poly
@@ -89,13 +90,10 @@
                         <li class="breadcrumb-item active">Tables</li>
                     </ol> -->
                     <div class="card mb-4">
-                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                            data-whatever="@getbootstrap" style="padding:5px; width: 50%; margin-left: 25%;">Add
-                            Manga</button> -->
-                        <div id="fdivAdd">
+                        <!-- <div id="fdivAdd">
                             <button type="button" class="btn btn-primary" id="fbtnAdd" data-whatever="@getbootstrap"
-                                onclick="showModalAddManga()">Add</button>
-                        </div>
+                                onclick="showModalAddManga()">Thêm</button>
+                        </div> -->
                         <!-- MODA ADD/UPDATE MANGA -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -155,9 +153,9 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                                data-dismiss="modal">Đóng</button>
                                             <button type="button" class="btn btn-primary" id="btnSubmitForm" name=""
-                                                onclick="submitForm()">Submit</button>
+                                                onclick="submitForm()">Xác nhận</button>
                                         </div>
                                     </form>
                                 </div>
@@ -181,7 +179,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            onclick="removeListChapter()">Close</button>
+                                            onclick="removeListChapter()">Đóng</button>
                                     </div>
                                 </div>
                             </div>
@@ -204,9 +202,9 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            id="btnCloseFormUpdateChapter" name="">Close</button>
+                                            id="btnCloseFormUpdateChapter" name="">Đóng</button>
                                         <button type="button" class="btn btn-primary" id="btnSubmitFormUpdateChapter"
-                                            name="" onclick="updateChapter()">Submit</button>
+                                            name="" onclick="updateChapter()">Xác nhận</button>
                                     </div>
                                 </div>
                             </div>
@@ -218,7 +216,8 @@
                             <div class="modal-dialog" role="document" style="margin-top:0px">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="modalListCategoryTitle" name="">Categories</h5>
+                                        <h5 class="modal-title" id="modalListCategoryTitle" name="">Danh sách thể loại
+                                        </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                             onclick="removeListCategory()">
                                             <span aria-hidden="true">&times;</span>
@@ -233,7 +232,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            onclick="removeListCategory()">Close</button>
+                                            onclick="removeListCategory()">Đóng</button>
                                     </div>
                                 </div>
                             </div>
@@ -245,34 +244,34 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Poster</th>
-                                        <th>Title</th>
-                                        <th>Total chapters</th>
-                                        <th>Author</th>
-                                        <th>Category</th>
-                                        <th>State</th>
-                                        <th>Description</th>
-                                        <th>Views</th>
-                                        <th>Likes</th>
+                                        <th>Bìa truyện</th>
+                                        <th>Tên truyện</th>
+                                        <th>Tổng số chương</th>
+                                        <th>Tác giả</th>
+                                        <th>Thể loại</th>
+                                        <th>Trạng thái</th>
+                                        <th>Nội dung</th>
+                                        <th>Lượt xem</th>
+                                        <th>Lượt like</th>
                                         <th></th>
-                                        <th>Created date</th>
-                                        <th>Updated date</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>Poster</th>
-                                        <th>Title</th>
-                                        <th>Total chapters</th>
-                                        <th>Author</th>
-                                        <th>Category</th>
-                                        <th>State</th>
-                                        <th>Description</th>
-                                        <th>Views</th>
-                                        <th>Likes</th>
+                                        <th>Bìa truyện</th>
+                                        <th>Tên truyện</th>
+                                        <th>Tổng số chương</th>
+                                        <th>Tác giả</th>
+                                        <th>Thể loại</th>
+                                        <th>Trạng thái</th>
+                                        <th>Nội dung</th>
+                                        <th>Lượt xem</th>
+                                        <th>Lượt like</th>
                                         <th></th>
-                                        <th>Created date</th>
-                                        <th>Updated date</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
                                     </tr>
                                 </tfoot>
                                 <!-- <tbody>
@@ -298,7 +297,6 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="assets/demo/datatables-demo.js"></script>
     <!-- import fontawesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
         crossorigin="anonymous"></script>

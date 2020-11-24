@@ -33,7 +33,7 @@ function signIn() {
             // Success 
             window.location.href = "mangas.html";
             let user = firebase.auth().currentUser;
-            console.log(user.metadata.lastSignInTime);
+            console.log(user.email+" / "+user.metadata.lastSignInTime);
         })
         .catch(function (error) {
             // Error Handling
