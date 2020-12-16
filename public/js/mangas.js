@@ -1,47 +1,3 @@
-//Make the DIV element draggagle:
-// dragElement(document.getElementById("fdivAdd"));
-
-// function dragElement(elmnt) {
-//     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-//     if (document.getElementById(elmnt.id + "header")) {
-//         /* if present, the header is where you move the DIV from:*/
-//         document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-//     } else {
-//         /* otherwise, move the DIV from anywhere inside the DIV:*/
-//         elmnt.onmousedown = dragMouseDown;
-//     }
-
-//     function dragMouseDown(e) {
-//         e = e || window.event;
-//         e.preventDefault();
-//         // get the mouse cursor position at startup:
-//         pos3 = e.clientX;
-//         pos4 = e.clientY;
-//         document.onmouseup = closeDragElement;
-//         // call a function whenever the cursor moves:
-//         document.onmousemove = elementDrag;
-//     }
-
-//     function elementDrag(e) {
-//         e = e || window.event;
-//         e.preventDefault();
-//         // calculate the new cursor position:
-//         pos1 = pos3 - e.clientX;
-//         pos2 = pos4 - e.clientY;
-//         pos3 = e.clientX;
-//         pos4 = e.clientY;
-//         // set the element's new position:
-//         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-//         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-//     }
-
-//     function closeDragElement() {
-//         /* stop moving when mouse button is released:*/
-//         document.onmouseup = null;
-//         document.onmousemove = null;
-//     }
-// }
-
 //show/hide loader
 function showLoader() {
     document.getElementById('loader').classList.add("show-loader");
@@ -106,52 +62,82 @@ async function submitForm() {
                 })
                 .catch(console.error);
         }
-        firebaseRef.child('chapters').child(id).child(chapterTitle.value.trim()).set(arrayImgs);
+        firebaseRef.child('Chapters').child(id).child(chapterTitle.value.trim()).set(
+            {
+                info: {
+                    id: chapterTitle.value.trim(),
+                    dateCreated: dateTime,
+                    dateUpdated: dateTime
+                },
+                images: arrayImgs
+            }
+        );
     }
 
     //add info
     async function uploadInfo() {
         var manga = {
             id: id,
-            title: title.value.trim(),
+            name: name.value.trim(),
             author: author.value.trim(),
-            category: stringSelectedCate,
+            genres: stringSelectedCate,
             description: description.value.trim(),
             state: state,
             poster: urlPoster,
-            totalViews: 0,
+            totalReads: 0,
             totalLikes: 0,
-            createdDate: dateTime,
-            updatedDate: ""
+            created: dateTime,
+            updated: dateTime
         }
+
         // for(var i = 0; i <arrSelectedCate.length;i++){
         //     manga[arrSelectedCate[i]]=arrSelectedCate[i];
         // }
-        firebaseRef.child('mangas').child(id).set(manga);
+        firebaseRef.child('Mangas').child(id).set(manga);
+        for (var i = 0; i < arrSelectedCate.length; i++) {
+            var genre = arrSelectedCate[i];
+            firebaseRef.child('Mangas').child(id).child(genre).set(genre);
+        }
     }
 
     //update info
     async function updateInfo() {
+        var totalReads;
+        var totalLikes;
+        var created;
+        await firebase.database().ref('Mangas/' + id).once('value').then(function (snapshot) {
+            totalReads = snapshot.val().totalReads;
+            totalLikes = snapshot.val().totalLikes;
+            created = snapshot.val().created;
+        });
         var manga = {
-            title: title.value.trim(),
+            id: id,
+            name: name.value.trim(),
             author: author.value.trim(),
-            category: stringSelectedCate,
+            genres: stringSelectedCate,
             description: description.value.trim(),
             state: state,
             poster: urlPoster,
-            updatedDate: dateTime
+            totalReads: totalReads,
+            totalLikes: totalLikes,
+            created: created,
+            updated: dateTime
         }
-        firebaseRef.child('mangas').child(id).update(manga);
+        firebaseRef.child('Mangas').child(id).set(manga);
+        for (var i = 0; i < arrSelectedCate.length; i++) {
+            var genre = arrSelectedCate[i];
+            firebaseRef.child('Mangas').child(id).child(genre).set(genre);
+        }
     }
 
     //global init
     //init firebase ref FIRST to getKey
     const firebaseRef = firebase.database().ref();
     //init form
-    var title = document.getElementById('title');
+    var name = document.getElementById('title');
     var author = document.getElementById('author');
-    var category = $('#category');
-    var arrSelectedCate = category.multipleSelect('getSelects');
+    var genres = $('#category');
+    var arrSelectedCate = genres.multipleSelect('getSelects');
     var stringSelectedCate = arrSelectedCate.join(', ');
     var description = document.getElementById('description');
     var statesbox = document.getElementById('state');
@@ -161,10 +147,10 @@ async function submitForm() {
     var poster = document.getElementById("poster").files[0];
     var chapterInput = document.getElementById("imgsChapter");
     //init date time
-    var today = new Date();
-    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + ' - ' + time;
+    // var today = new Date();
+    // var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+    // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = Date.now();
 
     const terms = [".", "#", "$", "/", "[", "]"];
 
@@ -172,15 +158,15 @@ async function submitForm() {
     if (modalTitle == 'Thêm truyện') {
         //ADD A NEW MANGA
         //generate Key
-        var id = firebaseRef.child('mangas').push().getKey();
+        var id = firebaseRef.child('Mangas').push().getKey();
         //MUST init posterRef and chapterRef AFTER the Key is generated
-        var posterRef = firebase.storage().ref('mangas/' + id);
-        var chapterRef = firebase.storage().ref('mangas/' + id + '/' + chapterTitle.value);
+        var posterRef = firebase.storage().ref('Mangas/' + id);
+        var chapterRef = firebase.storage().ref('Mangas/' + id + '/' + chapterTitle.value);
 
         //validation
-        if (!title.value.trim()) {
+        if (!name.value.trim()) {
             alert('Vui lòng nhập tên truyện!');
-            title.focus();
+            name.focus();
             hideLoader();
             return;
         } else if (!author.value.trim()) {
@@ -190,7 +176,7 @@ async function submitForm() {
             return;
         } else if (!stringSelectedCate) {
             alert('Vui lòng chọn tối thiểu 1 thể loại!');
-            category.focus();
+            genres.focus();
             hideLoader();
             return;
         } else if (!description.value.trim()) {
@@ -227,23 +213,23 @@ async function submitForm() {
             //reset form
             document.getElementById("insertMangaForm").reset();
             document.querySelector('#posterthumbnail').removeAttribute('src');
-            category.multipleSelect('uncheckAll');
+            genres.multipleSelect('uncheckAll');
             hideLoader();
             showSnackbar('Đăng truyện thành công');
         }
     } else {
         //UPDATE MANGA
         var id = document.getElementById("btnSubmitForm").getAttribute("name");
-        var posterRef = firebase.storage().ref('mangas/' + id);
-        var chapterRef = firebase.storage().ref('mangas/' + id + '/' + chapterTitle.value);
-        await firebase.database().ref('mangas/' + id).once('value').then(function (snapshot) {
+        var posterRef = firebase.storage().ref('Mangas/' + id);
+        var chapterRef = firebase.storage().ref('Mangas/' + id + '/' + chapterTitle.value);
+        await firebase.database().ref('Mangas/' + id).once('value').then(function (snapshot) {
             urlPoster = snapshot.val().poster;
         });
 
         //validation
-        if (!title.value.trim()) {
+        if (!name.value.trim()) {
             alert('Vui lòng nhập tên truyện!');
-            title.focus();
+            name.focus();
             hideLoader();
             return;
         } else if (!author.value.trim()) {
@@ -253,7 +239,7 @@ async function submitForm() {
             return;
         } else if (!stringSelectedCate) {
             alert('Vui lòng chọn tối thiểu 1 thể loại!');
-            category.focus();
+            genres.focus();
             hideLoader();
             return;
         } else if (!description.value.trim()) {
@@ -296,46 +282,65 @@ async function submitForm() {
 function deleteManga(id) {
     var r = confirm('Bạn có chắc muốn xóa truyện này?');
     if (r == true) {
-        firebase.database().ref('mangas').child(id).remove();
+        firebase.database().ref('Mangas').child(id).remove();
         location.reload();
     }
 }
 
-//load mangas from firebase
+//load Mangas from firebase
 window.onload = async function getAllMangas() {
     showLoader();
+    //set email from localStorage
+    document.getElementById("emailAdminMangaPoly").innerHTML = localStorage.getItem("emailAdminMangaPoly");
+
+    //load all Mangas
     var totalManga;
     var totalUser;
-    await firebase.database().ref('mangas').once('value', function (snapshot) {
+    var listManga = [];
+    await firebase.database().ref('Mangas').once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
             //count total manga
             totalManga = snapshot.numChildren();
 
-            firebase.database().ref('chapters/' + childKey).once('value', function (snapshot) {
+            firebase.database().ref('Chapters/' + childKey).once('value', function (snapshot) {
                 var totalChapters = snapshot.numChildren();
-                $('#dataTable').DataTable().row.add([
+                var listCategory = childData.genres.split(",");
+                var strCategory = listCategory[0] + '<br>';
+                for (i = 1; i < listCategory.length; i++) {
+                    strCategory += listCategory[i] + '<br>';
+                }
+                listManga.push([
                     '<img width="70px" height="100px" src="' + childData.poster + '">',
-                    '<p style="height:100px;overflow:auto">' + childData.title + '</p>',
-                    '<a href="javascript: void(0)" onclick="showModalListChapter(' + "'" + childKey + "'" + "," + "'" + childData.title + "'" + ')">' + totalChapters + '</a>',
-                    '<p style="height:100px;overflow:auto">' + childData.author + '</p>',
-                    '<p style="width:100px;height:100px;overflow:auto">' + childData.category + '</p>',
-                    childData.state,
-                    '<p style="width:350px;height:100px;overflow:auto">' + childData.description + '</p>',
-                    childData.totalViews,
-                    childData.totalLikes,
+                    '<div style="height:100px;display:flex;justify-content:center;overflow:auto;">' + childData.name + '</div>',
+                    '<div style="height:100px;display:flex;justify-content:center;"><a href="javascript: void(0)" onclick="showModalListChapter(' + "'" + childKey + "'" + "," + "'" + childData.name + "'" + ')">' + totalChapters + '</a></div>',
+                    '<div style="height:100px;display:flex;justify-content:center;overflow:auto;">' + childData.author + '</div>',
+                    '<div style="width:100px;height:100px;display:flex;justify-content:center;overflow:auto;">' + strCategory + '</div>',
+                    '<div style="height:100px;display:flex;justify-content:center;">' + childData.state + '</div>',
+                    '<div style="width:400px;height:100px;display:flex;justify-content:center;overflow:auto;">' + childData.description + '</div>',
+                    '<div style="height:100px;display:flex;justify-content:center;align-items:center;">' + childData.totalReads + '</div>',
+                    '<div style="height:100px;display:flex;justify-content:center;align-items:center;">' + childData.totalLikes + '</div>',
                     '<button class="btn btn-danger" style="margin-bottom:20px" onclick="deleteManga(' + "'" + childKey + "'" + ')">xóa</button>' +
                     '<button class="btn btn-warning" onclick="showModalUpdateManga(' + "'" + childKey + "'" + ')">sửa</button>',
-                    childData.createdDate,
-                    childData.updatedDate
-                ]).draw(false);
+                    '<div style="height:100px;display:flex;justify-content:center;align-items:center;">' + new Date(childData.created).toLocaleString() + '</div>',
+                    '<div style="height:100px;display:flex;justify-content:center;align-items:center;">' + new Date(childData.updated).toLocaleString() + '</div>',
+                ]);
+                //do code không đồng bộ và datatable chỉ đăng ký được 1 lần nên phải check nếu đã add xong hết manga vào listManga mới set datatable
+                if (listManga.length == totalManga) {
+                    $('#dataTable').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: ['colvis', 'pageLength'],
+                        data: listManga,
+                        pageLength: 50,
+                    });
+                }
             });
         });
     });
 
     //count total user
-    await firebase.database().ref('users').once('value', function (snapshot) {
+    await firebase.database().ref('Users').once('value', function (snapshot) {
         totalUser = snapshot.numChildren();
     });
     //set total manga and total user
@@ -345,12 +350,12 @@ window.onload = async function getAllMangas() {
     hideLoader();
 }
 
-//get all and setup multiple select
+//get all genres and setup multiple select
 var arrCategory = [];
 async function setupMultipleSelect() {
     arrCategory = [];
     //get all categories
-    await firebase.database().ref('categories').once('value', function (snapshot) {
+    await firebase.database().ref('Genres').once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var childData = childSnapshot.val();
             arrCategory.push(childData);
@@ -392,11 +397,11 @@ async function showModalUpdateManga(id) {
     document.getElementById('btnSubmitForm').setAttribute("name", id);
     document.getElementById('modalTitle').innerHTML = 'Cập nhật truyện';
     // var arrSelectedCate;
-    await firebase.database().ref('mangas/' + id).once('value').then(function (snapshot) {
+    await firebase.database().ref('Mangas/' + id).once('value').then(function (snapshot) {
         $('#posterthumbnail').attr('src', snapshot.val().poster);
-        document.getElementById("title").value = snapshot.val().title;
+        document.getElementById("title").value = snapshot.val().name;
         document.getElementById("author").value = snapshot.val().author;
-        arrSelectedCateGet = snapshot.val().category.split(", ");
+        arrSelectedCateGet = snapshot.val().genres.split(", ");
         $("#state").val(snapshot.val().state);
         document.getElementById("description").value = snapshot.val().description;
     });
@@ -409,7 +414,7 @@ function showModalListChapter(id, mangaTitle) {
     document.getElementById('modalListChapterTitle').innerHTML = mangaTitle;
     var content = '<div id="listChapter"></div>';
     $('#modalBody').append(content);
-    firebase.database().ref('chapters/' + id).once('value', function (snapshot) {
+    firebase.database().ref('Chapters/' + id).once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var chapterTitle = childSnapshot.key;
             content = '<i class="fas fa-trash-alt" onclick="deleteChapter(' + "'" + id + "'" + "," + "'" + chapterTitle + "'" + ')"></i><i class="fas fa-edit" onclick="showModalUpdateChapter(' + "'" + id + "'" + "," + "'" + mangaTitle + "'" + "," + "'" + chapterTitle + "'" + ')"></i><a href="chapter.html?' + id + '|' + chapterTitle + '|' + mangaTitle + '" target="_blank">' + chapterTitle + '</a></br>';
@@ -427,7 +432,7 @@ function removeListChapter() {
 function deleteChapter(idManga, idChapter) {
     var r = confirm('Bạn có chắc muốn xóa chapter này?');
     if (r == true) {
-        firebase.database().ref('chapters').child(idManga).child(idChapter).remove();
+        firebase.database().ref('Chapters').child(idManga).child(idChapter).remove();
     }
 }
 
@@ -446,7 +451,7 @@ async function updateChapter() {
         var chapterUpdateInput = document.getElementById("imgsUpdateChapter");
         var idManga = document.getElementById("btnCloseFormUpdateChapter").getAttribute("name");
         var chapterTitle = document.getElementById("btnSubmitFormUpdateChapter").getAttribute("name");
-        var chapterRef = firebase.storage().ref('mangas/' + idManga + '/' + chapterTitle);
+        var chapterRef = firebase.storage().ref('Mangas/' + idManga + '/' + chapterTitle);
         var arrayImgs = [];
         for (i = 0; i < chapterUpdateInput.files.length; i++) {
             const file = document.querySelector("#imgsUpdateChapter").files[i];
@@ -462,7 +467,7 @@ async function updateChapter() {
                 })
                 .catch(console.error);
         }
-        firebaseRef.child('chapters').child(idManga).child(chapterTitle).set(arrayImgs);
+        firebaseRef.child('Chapters').child(idManga).child(chapterTitle).set(arrayImgs);
     }
     var r = confirm('Cập nhật sẽ cập nhật lại toàn bộ ảnh của chapter này, bạn có muốn tiếp tục?');
     if (r == true) {
@@ -482,7 +487,7 @@ function showModalListCategory() {
 function getAllListCategory() {
     var content = '<div id="listCategory"></div>';
     $('#modalBodyListCategory').append(content);
-    firebase.database().ref('categories').once('value', function (snapshot) {
+    firebase.database().ref('Genres').once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
@@ -499,7 +504,7 @@ async function addCategory() {
         alert('Vui lòng nhập tên thể loại!');
     } else {
         var isDuplicated = false;
-        await firebase.database().ref('categories').once('value', function (snapshot) {
+        await firebase.database().ref('Genres').once('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var childData = childSnapshot.val();
                 if (newCategory.value.trim() == childData) {
@@ -511,7 +516,7 @@ async function addCategory() {
 
         if (!isDuplicated) {
             const firebaseRef = firebase.database().ref();
-            await firebaseRef.child('categories').push(newCategory.value.trim());
+            await firebaseRef.child('Genres').push(newCategory.value.trim());
             removeListCategory();
             getAllListCategory();
             setupMultipleSelect();
@@ -531,7 +536,7 @@ function removeListCategory() {
 async function deleteCategory(idCategory) {
     var r = confirm('Bạn có chắc muốn xóa thể loại này?');
     if (r == true) {
-        await firebase.database().ref('categories').child(idCategory).remove();
+        await firebase.database().ref('Genres').child(idCategory).remove();
         removeListCategory();
         getAllListCategory();
         setupMultipleSelect();

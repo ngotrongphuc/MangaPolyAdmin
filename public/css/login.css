@@ -3,8 +3,7 @@
     height: 500px;
     margin: auto;
     margin-top: 100px;
-    border: black;
-    border-width: 3px;
+    border-width: 0px;
     border-radius: 30px;
     border-style: solid;
     background-color: rgba(0, 0, 0, 0.7);
@@ -31,7 +30,7 @@ h1 {
     text-align: center;
     font-weight: bold;
     font-size: 50px;
-    color: rgb(0, 255, 170);
+    color: white;
     margin-top: 50px;
 }
 

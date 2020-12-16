@@ -10,12 +10,13 @@
     <title>Mangas</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/mangas.css" rel="stylesheet" />
-    <!-- css datatable -->
+    <!-- css datatables -->
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
         crossorigin="anonymous" />
+    <!-- css button datatables -->
+    <link href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" rel="stylesheet">
     <!-- css multiple select -->
     <link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
-
 </head>
 
 <body class="sb-nav-fixed">
@@ -25,24 +26,29 @@
             style="color: limegreen;margin-top: 8px;margin-left:16px"></i>
     </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="mangas.html">Manga Poly</a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" style="margin-left:10px"><i
                 class="fas fa-bars"></i></button>
+        <a href="mangas.html"><img id="logo" style="width: 40px;height: 40px;margin-left: 10px;"
+                src="assets/images/logo.jpg"></a>
+        <a class="navbar-brand" href="mangas.html">Manga Poly</a>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
                     aria-describedby="basic-addon2" />
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                 </div>
-            </div>
+            </div> -->
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    aria-haspopup="true" aria-expanded="false" style="display: flex;margin-top:20px">
+                    <p id="emailAdminMangaPoly" style="margin-top:-2px;margin-right: 10px;">email</p><i
+                        class="fas fa-user fa-fw"></i>
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" onclick="signOut()" style="cursor: pointer;">Đăng xuất</a>
                 </div>
@@ -74,26 +80,55 @@
                         </div>
                     </div>
                 </div>
-                <button ID="btnAdd" type="button" class="btn btn-success" onclick="showModalAddManga()">THÊM</button>
-                <div class="sb-sidenav-footer">
-                    <div class="small">App:</div>
+                <button id="btnAdd" type="button" class="btn btn-success" onclick="showModalAddManga()">THÊM
+                    TRUYỆN</button>
+                <div class="sb-sidenav-footer" style="text-align: center">
                     Manga Poly
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Bìa</th>
+                                    <th>Tên</th>
+                                    <th>Chương</th>
+                                    <th>Tác giả</th>
+                                    <th>Thể loại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Nội dung</th>
+                                    <th>Lượt xem</th>
+                                    <th>Lượt like</th>
+                                    <th>Chức năng</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Cập nhật</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Bìa</th>
+                                    <th>Tên</th>
+                                    <th>Chương</th>
+                                    <th>Tác giả</th>
+                                    <th>Thể loại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Nội dung</th>
+                                    <th>Lượt xem</th>
+                                    <th>Lượt like</th>
+                                    <th>Chức năng</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Cập nhật</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
                 <div class="container-fluid">
-                    <!-- <h1 class="mt-4">Truyện</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Tables</li>
-                    </ol> -->
                     <div class="card mb-4">
-                        <!-- <div id="fdivAdd">
-                            <button type="button" class="btn btn-primary" id="fbtnAdd" data-whatever="@getbootstrap"
-                                onclick="showModalAddManga()">Thêm</button>
-                        </div> -->
                         <!-- MODA ADD/UPDATE MANGA -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -238,55 +273,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Bìa truyện</th>
-                                        <th>Tên truyện</th>
-                                        <th>Tổng số chương</th>
-                                        <th>Tác giả</th>
-                                        <th>Thể loại</th>
-                                        <th>Trạng thái</th>
-                                        <th>Nội dung</th>
-                                        <th>Lượt xem</th>
-                                        <th>Lượt like</th>
-                                        <th></th>
-                                        <th>Ngày tạo</th>
-                                        <th>Ngày cập nhật</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Bìa truyện</th>
-                                        <th>Tên truyện</th>
-                                        <th>Tổng số chương</th>
-                                        <th>Tác giả</th>
-                                        <th>Thể loại</th>
-                                        <th>Trạng thái</th>
-                                        <th>Nội dung</th>
-                                        <th>Lượt xem</th>
-                                        <th>Lượt like</th>
-                                        <th></th>
-                                        <th>Ngày tạo</th>
-                                        <th>Ngày cập nhật</th>
-                                    </tr>
-                                </tfoot>
-                                <!-- <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody> -->
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </main>
         </div>
@@ -296,6 +282,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src=" https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
     <!-- import fontawesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"

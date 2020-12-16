@@ -9,33 +9,40 @@
     <meta name="author" content="" />
     <title>Users</title>
     <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/mangas.css" rel="stylesheet" />
+    <!-- css datatables -->
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
         crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
-        crossorigin="anonymous"></script>
+    <!-- css button datatables -->
+    <link href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" rel="stylesheet">
 </head>
 
 <body class="sb-nav-fixed">
     <div class="loader hide-loader" id="loader"></div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="mangas.html">Manga Poly</a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" style="margin-left:10px"><i
                 class="fas fa-bars"></i></button>
+        <a href="mangas.html"><img id="logo" style="width: 40px;height: 40px;margin-left: 10px;"
+                src="assets/images/logo.jpg"></a>
+        <a class="navbar-brand" href="mangas.html">Manga Poly</a>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
                     aria-describedby="basic-addon2" />
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                 </div>
-            </div>
+            </div> -->
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ml-auto ml-md-0">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    aria-haspopup="true" aria-expanded="false" style="display: flex;margin-top:20px">
+                    <p id="emailAdminMangaPoly" style="margin-top:-2px;margin-right: 10px;">email</p><i
+                        class="fas fa-user fa-fw"></i>
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="login.html">Đăng xuất</a>
                 </div>
@@ -67,8 +74,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">App:</div>
+                <div class="sb-sidenav-footer" style="text-align: center">
                     Manga Poly
                 </div>
             </nav>
@@ -81,9 +87,8 @@
                             <thead>
                                 <tr>
                                     <th>Ảnh đại diện</th>
-                                    <th>Tên đăng nhập</th>
+                                    <th>Họ tên</th>
                                     <th>Email</th>
-                                    <th>Mật khẩu</th>
                                     <th>Ngày tạo</th>
                                     <th>Loại tài khoản</th>
                                 </tr>
@@ -91,22 +96,12 @@
                             <tfoot>
                                 <tr>
                                     <th>Ảnh đại diện</th>
-                                    <th>Tên đăng nhập</th>
+                                    <th>Họ tên</th>
                                     <th>Email</th>
-                                    <th>Mật khẩu</th>
                                     <th>Ngày tạo</th>
                                     <th>Loại tài khoản</th>
                                 </tr>
                             </tfoot>
-                            <!-- <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody> -->
                         </table>
                     </div>
                 </div>
@@ -118,7 +113,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src=" https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <!-- import fontawesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+        crossorigin="anonymous"></script>
     <!-- import firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>

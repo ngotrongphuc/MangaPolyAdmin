@@ -1,15 +1,16 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyC0rLM1lrW8VgBbTLEMour4JAKmhBrl5m8",
-    authDomain: "manga-poly.firebaseapp.com",
-    databaseURL: "https://manga-poly.firebaseio.com",
-    projectId: "manga-poly",
-    storageBucket: "manga-poly.appspot.com",
-    messagingSenderId: "1064797271581",
-    appId: "1:1064797271581:web:a5f7a16105e89b946a38f4",
-    measurementId: "G-PJ3GY1HLTC"
+    apiKey: "AIzaSyDZzsSB--6BI-u1zE37tFymqbLXFkH6YfM",
+    authDomain: "mangapoly-79931.firebaseapp.com",
+    databaseURL: "https://mangapoly-79931-default-rtdb.firebaseio.com",
+    projectId: "mangapoly-79931",
+    storageBucket: "mangapoly-79931.appspot.com",
+    messagingSenderId: "815405617474",
+    appId: "1:815405617474:web:9990a0f632cb6c71d7f8db",
+    measurementId: "G-MK2VS1B4JR"
 };
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -30,10 +31,13 @@ function signIn() {
 
     firebase.auth().signInWithEmailAndPassword(email.value, password.value)
         .then(function (firebaseUser) {
-            // Success 
+            // Success
+            //set email into localStorage
+            localStorage.setItem("emailAdminMangaPoly", email.value);
+            //redirect to index
             window.location.href = "mangas.html";
             let user = firebase.auth().currentUser;
-            console.log(user.email+" / "+user.metadata.lastSignInTime);
+            console.log(user.email + " / " + user.metadata.lastSignInTime);
         })
         .catch(function (error) {
             // Error Handling
@@ -46,6 +50,7 @@ function signOut() {
     window.location.href = "login.html";
 }
 
+// Get the currently signed-in user
 // auth.onAuthStateChanged(function (user) {
 //     if (user) {
 //         var email = user.email;
@@ -76,3 +81,48 @@ window.onload = function () {
         }
     });
 }
+
+
+//remember login
+$(document).ready(function () {
+    var rememberCookie = $.cookie('remember');
+    if (rememberCookie == 'true') {
+        var email = $.cookie('email');
+        var password = $.cookie('password');
+        // autofill the fields
+        $('#email').val(email);
+        $('#password').val(password);
+        $('#remember').prop('checked', true);
+    }
+
+    $("#btnSignin").click(function () {
+        var remember = $('#remember:checked').is(":checked");
+        if (remember) {
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            // set cookies to expire in 14 days
+            $.cookie('email', email, { expires: 14 });
+            $.cookie('password', password, { expires: 14 });
+            $.cookie('remember', true, { expires: 14 });
+        } else {
+            // reset cookies
+            $.cookie('email', null);
+            $.cookie('password', null);
+            $.cookie('remember', null);
+        }
+    });
+
+    $("#btnSendResetPassword").click(function () {
+        var emailAddress = document.getElementById("emailReset").value;;
+
+        auth.sendPasswordResetEmail(emailAddress).then(function () {
+            // Email sent.
+            document.getElementById('modalResetPassword').style.display = 'none';
+            alert("Đã gửi một email lấy lại mật khẩu tới " + emailAddress + ". Vui lòng kiểm tra hộp thư!");
+        }).catch(function (error) {
+            // An error happened.
+            alert("Gửi không thành công!");
+        });
+    });
+});

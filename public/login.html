@@ -7,10 +7,12 @@
 		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" href="css/login.css" />
+	<!-- <link href="css/styles.css" rel="stylesheet" /> -->
 	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
 	<script src="js/login.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 </head>
 
 <body>
@@ -18,28 +20,52 @@
 		<div class="row main">
 			<div class="col-lg-3 col-md-3 col-sm-3"></div>
 			<div class="col-lg-6 col-md-6 col-sm-6">
-					<h1>ĐĂNG NHẬP</h1>
-					<br>
-					<div class="form-group">
-						<label for="email"><b>Email:</b></label>
-						<input type="email" class="form-control" placeholder="nhập email" id="email" name="email"
-							required>
+				<h1>ĐĂNG NHẬP</h1>
+				<br>
+				<div class="form-group">
+					<label for="email"><b>Email:</b></label>
+					<input type="email" class="form-control" placeholder="nhập email" id="email" name="email" required>
+				</div>
+				<div class="form-group">
+					<label for="pwd"><b>Mật khẩu:</b></label>
+					<input type="password" class="form-control" placeholder="nhập mật khẩu" id="password"
+						name="password" required title="mật khẩu phải tối thiểu 6 ký tự!" pattern=".{6,}">
+				</div>
+				<div class="form-group form-check">
+					<label class="form-check-label">
+						<input id="remember" class="form-check-input" type="checkbox">Nhớ mật khẩu
+					</label>
+					<a id="resetpwd" href="javascript: void(0)"
+						onclick="document.getElementById('modalResetPassword').style.display='block'">Quên mật khẩu?</a>
+				</div>
+				<button type="submit" class="btn btn-primary btn_login" id="btnSignin" onclick="signIn()">Đăng
+					nhập</button>
+
+				<div id="modalResetPassword" class="modal-content" style="margin-top:-285px;display: none">
+					<div class="modal-header">
+						<h5 class="modal-title" name="">Gửi email lấy lại mật khẩu</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true"
+								onclick="document.getElementById('modalResetPassword').style.display='none'">&times;</span>
+						</button>
 					</div>
-					<div class="form-group">
-						<label for="pwd"><b>Mật khẩu:</b></label>
-						<input type="password" class="form-control" placeholder="nhập mật khẩu" id="password"
-							name="password" required title="mật khẩu phải tối thiểu 6 ký tự!" pattern=".{6,}">
+					<div class="modal-body" id="modalBody">
+						<input type="email" class="form-control" placeholder="nhập email" id="emailReset">
 					</div>
-					<div class="form-group form-check">
-						<label class="form-check-label">
-							<input class="form-check-input" type="checkbox">Nhớ mật khẩu
-						</label>
-						<a id="resetpwd" href="">Quên mật khẩu?</a>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"
+							onclick="document.getElementById('modalResetPassword').style.display='none'">Đóng</button>
+						<button type="button" class="btn btn-primary" id="btnSendResetPassword">Gửi xác nhận đến
+							email này</button>
 					</div>
-					<button type="submit" class="btn btn-primary btn_login" id="btnSignin" onclick="signIn()">Đăng nhập</button>
+				</div>
+
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3"></div>
 		</div>
+
+
+
 	</div>
 </body>
 

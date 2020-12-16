@@ -9,7 +9,7 @@ window.onload = async function () {
 
     document.title = uri_titleManga + ' | ' + uri_nameChapter;
 
-    await firebase.database().ref('chapters/' + arr[0] + '/' + uri_nameChapter).once('value', function (snapshot) {
+    await firebase.database().ref('Chapters/' + arr[0] + '/' + uri_nameChapter+'/images').once('value', function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
@@ -22,5 +22,4 @@ window.onload = async function () {
 function darkmode() {
     var element = document.body;
     element.classList.toggle("dark-mode");
-
 }
